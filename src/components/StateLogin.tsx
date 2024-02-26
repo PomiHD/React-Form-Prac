@@ -1,14 +1,18 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 
 export default function Login() {
-  const emailRef = useRef();
-  const passwordRef = useRef();
+  const [enteredValue, setEnteredValue] = useState({ email: "", password: "" });
+  function handleInputChange(itendifier, value) {
+    setEnteredValue((prevValue) => ({
+      ...prevValue,
+      [itendifier]: value,
+    }));
+  }
 
   function handelSubmit(event) {
     event.preventDefault();
-    const enteredEmail = emailRef.current.value;
-    const enteredPassword = passwordRef.current.value;
-    console.log(enteredEmail + "\n" + enteredPassword);
+    console.log("Form submitted");
+    console.log(enteredValue);
   }
 
   return (
@@ -18,7 +22,13 @@ export default function Login() {
       <div className="control-row">
         <div className="control no-margin">
           <label htmlFor="email">Email</label>
-          <input id="email" type="email" name="email" ref={emailRef} />
+          <input
+            id="email"
+            type="email"
+            name="email"
+            value={enteredValue.email}
+            onChange={(event) => handleInputChange("email", event.target.value)}
+          />
         </div>
 
         <div className="control no-margin">
@@ -27,7 +37,10 @@ export default function Login() {
             id="password"
             type="password"
             name="password"
-            ref={passwordRef}
+            value={enteredValue.password}
+            onChange={(event) =>
+              handleInputChange("password", event.target.value)
+            }
           />
         </div>
       </div>

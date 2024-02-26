@@ -7,34 +7,9 @@ export default function Signup() {
     const acquisationChannel = fd.getAll("acquisition");
     const data = Object.fromEntries(fd.entries());
     data.acquisition = acquisationChannel;
-
-    // const enteredEmail = fd.get("email");
-    // const enteredPassword = fd.get("password");
-    // const enteredConfirmPassword = fd.get("confirm-password");
-    // const enteredFirstName = fd.get("first-name");
-    // const enteredLastName = fd.get("last-name");
-    // const enteredRole = fd.get("role");
-    // const enteredAcquisition = fd.getAll("acquisition");
-    // const enteredTerms = fd.get("terms");
-    // console.log(
-    //   "Email: " +
-    //     enteredEmail +
-    //     "\nPassword: " +
-    //     enteredPassword +
-    //     "\nConfirm Password: " +
-    //     enteredConfirmPassword +
-    //     "\nFirst Name: " +
-    //     enteredFirstName +
-    //     "\nLast Name: " +
-    //     enteredLastName +
-    //     "\nRole: " +
-    //     enteredRole +
-    //     "\nAcquisition: " +
-    //     enteredAcquisition +
-    //     "\nTerms: " +
-    //     enteredTerms,
-    // );
     console.log(data);
+    // reset the form
+    event.target.reset();
   }
   return (
     <form onSubmit={handelSubmit}>

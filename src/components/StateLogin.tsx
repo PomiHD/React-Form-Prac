@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Input from "./Input.tsx";
 
 export default function Login() {
   const [enteredValue, setEnteredValue] = useState({ email: "", password: "" });
@@ -18,7 +19,8 @@ export default function Login() {
   }
 
   const emailIsInvalid = !enteredValue.email.includes("@") && didEdit.email;
-
+  const passwordIsInvalid =
+    enteredValue.password.trim().length < 6 && didEdit.password;
   function handelSubmit(event) {
     event.preventDefault();
     console.log("Form submitted");
@@ -31,24 +33,23 @@ export default function Login() {
 
       <div className="control-row">
         <div className="control no-margin">
-          <label htmlFor="email">Email</label>
-          <input
-            id="email"
+          <Input
+            label={"Email"}
+            id={"email"}
+            error={emailIsInvalid}
+            errorText={"Please enter a valid email"}
             type="email"
             name="email"
             value={enteredValue.email}
             onBlur={() => handelInputBlur("email")}
             onChange={(event) => handleInputChange("email", event.target.value)}
           />
-          <div className="control-error">
-            {emailIsInvalid && <p>Please enter a valid email</p>}
-          </div>
         </div>
 
         <div className="control no-margin">
-          <label htmlFor="password">Password</label>
-          <input
-            id="password"
+          <Input
+            label={"Password"}
+            id={"password"}
             type="password"
             name="password"
             value={enteredValue.password}
@@ -56,6 +57,8 @@ export default function Login() {
             onChange={(event) =>
               handleInputChange("password", event.target.value)
             }
+            error={passwordIsInvalid}
+            errorText={"Please enter a valid password"}
           />
         </div>
       </div>

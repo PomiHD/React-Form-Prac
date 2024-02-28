@@ -23,8 +23,11 @@ export default function Login() {
     enteredValue.password.trim().length < 6 && didEdit.password;
   function handelSubmit(event) {
     event.preventDefault();
-    console.log("Form submitted");
-    console.log(enteredValue);
+    if (emailIsInvalid || passwordIsInvalid) {
+      console.log("stop sending http request...");
+      return;
+    }
+    console.log("sending http request...");
   }
 
   return (

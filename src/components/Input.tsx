@@ -3,7 +3,7 @@ export default function Input({ label, id, error, errorText, ...props }) {
     <div className="control no-margin">
       <label htmlFor={id}>{label}</label>
       <input id="email" {...props} />
-      <div className="control-error">{error && <p>P{errorText}</p>}</div>
+      <div className="control-error">{error && <p>{errorText}</p>}</div>
     </div>
   );
 }

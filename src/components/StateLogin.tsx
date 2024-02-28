@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Input from "./Input.tsx";
+import { isEmail, isNotEmpty, hasMinLength } from "../util/validation.ts";
 
 export default function Login() {
   const [enteredValue, setEnteredValue] = useState({ email: "", password: "" });
@@ -18,11 +19,16 @@ export default function Login() {
     setDidEdit((prevValue) => ({ ...prevValue, [identifier]: true }));
   }
 
-  const emailIsInvalid = !enteredValue.email.includes("@") && didEdit.email;
+  const emailIsInvalid =
+    !isEmail(enteredValue.email) &&
+    didEdit.email &&
+    !isNotEmpty(enteredValue.email) &&
+    true;
   const passwordIsInvalid =
-    enteredValue.password.trim().length < 6 && didEdit.password;
+    !hasMinLength(enteredValue.password, 6) && didEdit.password && true;
   function handelSubmit(event) {
     event.preventDefault();
+    console.log(emailIsInvalid, passwordIsInvalid);
     if (emailIsInvalid || passwordIsInvalid) {
       console.log("stop sending http request...");
       return;

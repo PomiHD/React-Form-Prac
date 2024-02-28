@@ -1,6 +1,10 @@
+import { useState } from "react";
+
 export default function Signup() {
+  const [passwordNotEqual, setPasswordNotEqual] = useState(false);
   function handelSubmit(event) {
     event.preventDefault();
+    setPasswordNotEqual(false);
     // must have name attribute in input fields, otherwise FormData will not work
 
     const fd = new FormData(event.target);
@@ -8,8 +12,10 @@ export default function Signup() {
     const data = Object.fromEntries(fd.entries());
     data.acquisition = acquisationChannel;
     console.log(data);
-    // reset the form
-    event.target.reset();
+    if (data.password !== data["confirm-password"]) {
+      setPasswordNotEqual(true);
+      return;
+    }
   }
   return (
     <form onSubmit={handelSubmit}>
@@ -42,6 +48,9 @@ export default function Signup() {
             required
             minLength={6}
           />
+          <div className="control-error">
+            {passwordNotEqual && <p>Password is not match!</p>}
+          </div>
         </div>
       </div>
 

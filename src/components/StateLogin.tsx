@@ -1,35 +1,27 @@
-import { useState } from "react";
 import Input from "./Input.tsx";
 import { isEmail, isNotEmpty, hasMinLength } from "../util/validation.ts";
+import { useInput } from "../useInput.ts";
 
 export default function Login() {
-  const [enteredValue, setEnteredValue] = useState({ email: "", password: "" });
-  const [didEdit, setDidEdit] = useState({
-    email: false,
-    password: false,
-  });
-  function handleInputChange(identifier, value) {
-    setEnteredValue((prevValue) => ({
-      ...prevValue,
-      [identifier]: value,
-    }));
-    setDidEdit((prevValue) => ({ ...prevValue, [identifier]: false }));
-  }
-  function handelInputBlur(identifier: string) {
-    setDidEdit((prevValue) => ({ ...prevValue, [identifier]: true }));
-  }
+  const {
+    value: emailValue,
+    handleInputChange: handelEmailChange,
+    handelInputBlur: handelEmailBlur,
+    hasError: emailHasError,
+  } = useInput("", (value: any) => isEmail(value) && isNotEmpty(value));
+  const {
+    value: passwordValue,
+    handleInputChange: handelPasswordChange,
+    handelInputBlur: handelPasswordBlur,
+    hasError: passwordHasError,
+  } = useInput("", (value: any) => hasMinLength(value, 6));
 
-  const emailIsInvalid =
-    !isEmail(enteredValue.email) &&
-    didEdit.email &&
-    !isNotEmpty(enteredValue.email) &&
-    true;
-  const passwordIsInvalid =
-    !hasMinLength(enteredValue.password, 6) && didEdit.password && true;
   function handelSubmit(event) {
     event.preventDefault();
-    console.log(emailIsInvalid, passwordIsInvalid);
-    if (emailIsInvalid || passwordIsInvalid) {
+    console.log(
+      "email error: " + emailHasError + "\npassword error: " + passwordHasError,
+    );
+    if (emailHasError || passwordHasError) {
       console.log("stop sending http request...");
       return;
     }
@@ -45,13 +37,13 @@ export default function Login() {
           <Input
             label={"Email"}
             id={"email"}
-            error={emailIsInvalid}
+            error={emailHasError}
             errorText={"Please enter a valid email"}
             type="email"
             name="email"
-            value={enteredValue.email}
-            onBlur={() => handelInputBlur("email")}
-            onChange={(event) => handleInputChange("email", event.target.value)}
+            value={emailValue}
+            onBlur={() => handelEmailBlur()}
+            onChange={(event) => handelEmailChange(event)}
           />
         </div>
 
@@ -61,12 +53,10 @@ export default function Login() {
             id={"password"}
             type="password"
             name="password"
-            value={enteredValue.password}
-            onBlur={() => handelInputBlur("password")}
-            onChange={(event) =>
-              handleInputChange("password", event.target.value)
-            }
-            error={passwordIsInvalid}
+            value={passwordValue}
+            onBlur={() => handelPasswordBlur()}
+            onChange={(event) => handelPasswordChange(event)}
+            error={passwordHasError}
             errorText={"Please enter a valid password"}
           />
         </div>
